@@ -20,43 +20,69 @@ pizza_data = pizza.get_all_records()
 drinks_data = drinks.get_all_records()
 salads_data = salads.get_all_records()
 
-def welcome():
+def main():
 
-    """
-    Prints a welcome message and asks the customer
-    if they want to see the menu. Customer can say yes or no.
-    """
+    def welcome():
 
-    symbol = '~'
-    print(f'{symbol * 31}\n| Welcome to Italian takeaway |\n{symbol * 31}')
+        """
+        Prints a welcome message and asks the customer
+        if they want to see the menu. Customer can say yes or no.
+        """
 
-def show_menu():
-    answer = input('Would you like to see the menu? (y/n): ')
-    if answer == 'n':
-        print('Okay! Goodbye!')
-    elif answer == 'y':
-        print_menu(pizza)
-        # print_menu(salads)
-        # print_menu(drinks)
+        symbol = '~'
+        print(f'{symbol * 31}\n| Welcome to Italian takeaway |\n{symbol * 31}')
+
+    def show_menu():
+        answer = input('Would you like to see the menu? (y/n): ')
+        if answer == 'n':
+            print('Okay! Goodbye!')
+        elif answer == 'y':
+            show_options(pizza)
+            show_options(salads)
+            show_options(drinks)
 
 
-def print_menu(sheet):
+    def show_options(sheet):
 
-    """
-    Prints the menu and the cost of the products
-    """
-    number = 0
-    products = sheet.col_values(1)[1:-1]
-    price = sheet.col_values(2)[1: -1]
-    print()
-    for (item, cost) in zip(products, price):
-        if item == 'margherita':
-            print('PIZZA\n')
-        elif item == 'greek salad':
-            print('SALADS\n')
-        elif item == 'fresh fruit juice':
-            print('DRINKS\n')
-        print(f'{item.capitalize()} ${cost}' )
+        """
+        Prints the menu and the cost of the products
+        """
+        number = 0
+        products = sheet.col_values(1)[1:-1]
+        price = sheet.col_values(2)[1: -1]
+        print()
+        for (item, cost) in zip(products, price):
+            if item == 'margherita':
+                print('PIZZA\n')
+            elif item == 'greek salad':
+                print('SALADS\n')
+            elif item == 'fresh fruit juice':
+                print('DRINKS\n')
+            print(f'{item.capitalize()} ${cost}' )
 
-welcome()
-show_menu()
+    
+    def show_sub_menu(menu):
+        number = 0
+        products = menu.col_values(1)[1:-1]
+        price = menu.col_values(2)[1: -1]
+        for (item, cost) in zip(products, price):
+            number += 1
+            print(f'({number}) {item.capitalize()} ${cost}' )
+
+
+    def chose_menu():
+        print('\nWhat will it be?\n(1)Pizza\n(2)Drink\n(3)Salad')
+        answer = int(input('\nNumber: '))
+        if answer == 1:
+            show_sub_menu(pizza)
+        elif answer == 2:
+            show_sub_menu(drinks)
+        elif answer == 3:
+            show_sub_menu(salads)
+        
+            
+
+    welcome()
+    show_menu()
+    chose_menu()
+main()
