@@ -1,5 +1,5 @@
 
-# food-menu terminal
+# food-menu spreadsheet
 
 ## Link to the app on heroku
 [food-menu-terminal](https://food-menu-spreadsheet.herokuapp.com/)
