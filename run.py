@@ -49,7 +49,7 @@ def main():
         answer = ''
         
         if answer != 'y' or 'n':
-            answer = input('\nWould you like to see the menu?: ')
+            answer = input('\nWould you like to see the menu? (y/n):\n')
 
             if answer == 'y':
                 choose_product()
@@ -80,7 +80,7 @@ def main():
         """
         
         try:
-            answer = int(input('\nWhat will it be?\n(1)Pizza\n(2)Drink\n(3)Salad\nNumber: '))
+            answer = int(input('\nWhat will it be?\n(1)Pizza\n(2)Drink\n(3)Salad\nNumber:\n'))
             if answer == 1:
                 show_sub_menu(pizza)
                 data = get_data(pizza)
@@ -97,6 +97,7 @@ def main():
                 update_sales_worksheet(data)
         except ValueError as e:
             print(f'Invalid input: {e}. Please input a number between 1 and 3.')
+            print('Please restart the program.')
             exit()
             
     
@@ -114,7 +115,7 @@ def main():
         prices = []
         items_cost = 0
         
-        num = int(input("\nWhich one?: "))
+        num = int(input("\nWhich one?:\n"))
         num -= 1
 
         for cost in price:
@@ -157,7 +158,7 @@ def main():
 
         answer = ''
         while answer != 'q':
-            answer = input('\nAnything else?: ')
+            answer = input('\nAnything else? (y/n):\n')
 
             if answer == 'y':
                 choose_product()
