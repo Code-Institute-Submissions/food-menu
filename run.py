@@ -38,34 +38,20 @@ def main():
 
         show_menu()
 
+    
+    
     def show_menu():
-        answer = input('Would you like to see the menu? (y/n): ')
-        if answer == 'n':
-            print('Okay! Goodbye!')
-        elif answer == 'y':
-            show_options(pizza)
-            show_options(salads)
-            show_options(drinks)
-            chose_menu()
+        answer = str(input('Would you like to see the menu? (y/n): '))
 
+        if answer == 'y':
+            chose_product()
+        elif answer == 'n':
+            print('Have a nice day!')
+            exit()
+        elif answer != 'y' or 'n':
+            print('Please type "y" or "n"')
+            show_menu()
 
-    def show_options(sheet):
-
-        """
-        Prints the menu and the cost of the products.
-        """
-        number = 0
-        products = sheet.col_values(1)[1:-1]
-        price = sheet.col_values(2)[1: -1]
-        print()
-        for (item, cost) in zip(products, price):
-            if item == 'margherita':
-                print('PIZZA\n')
-            elif item == 'greek salad':
-                print('SALADS\n')
-            elif item == 'fresh fruit juice':
-                print('DRINKS\n')
-            print(f'{item.capitalize()} ${cost}' )
 
     
     def show_sub_menu(menu):
@@ -82,7 +68,7 @@ def main():
             print(f'({number}) {item.capitalize()} ${cost}' )
 
 
-    def chose_menu():
+    def chose_product():
 
         """
         Chose which submenu to buy from. Number has to be between 1 and 3
@@ -92,49 +78,65 @@ def main():
         answer = int(input('\nNumber: '))
         if answer == 1:
             show_sub_menu(pizza)
-            chose_product(pizza)
+            data = get_data(pizza)
+            return data
+            
         elif answer == 2:
             show_sub_menu(drinks)
-            chose_product(drinks)
+            data = get_data(drinks)
+            return data
         elif answer == 3:
             show_sub_menu(salads)
-            chose_product(salads)
+            data = get_data(salads)
+            return data
         
     
-    def chose_product(menu):
-        selected_items = []
-        split_items = ', '.join(selected_items)
-        items_cost = float(0)
+    
+    def get_data(menu):
         
+        products = menu.col_values(1)[1:-1]
+        price = menu.col_values(2)[1: -1]
+        selected_items = []
+        prices = []
+        items_cost = 0
+        
+        for cost in price:
+            prices.append(cost.replace(',', '.'))
 
-        while True:
-            products = menu.col_values(1)[1:-1]
-            price = menu.col_values(2)[1: -1]
-            prices = []
-            for number in price:
-                prices.append(number.replace(',', '.'))
-            new_prices = [float(i) for i in prices]
-
-            try:
-                num = int(input('Which one?: '))
-                num -= 1
+        num = int(input('Which one?: '))
+        num -= 1
                 
-                selected_items.append(products[num].capitalize())
-                items_cost += new_prices[num]
+        selected_items.append(products[num].capitalize())
                 
-                
-                if len(selected_items) >= 1:
-                    answer = input('Anything else? (y/n): ')
-                    if answer == 'y':
-                        chose_menu()
-                    elif answer == 'n':
-                        print('Thank you for shopping.\n')
-                        print(f'Your order is {split_items} for a total cost of ${items_cost}.')
-                        break
-
-            except IndexError:
-                print(f'You have to chose a number between 1 and {len(products)}.')
-
+        items_cost += float(prices[num])
+        items_cost_string = str(items_cost)
+        selected_items.append(items_cost_string)        
+        
+        return selected_items
+    
 
     welcome()
+    
+    
+    def update_sales_worksheet():
+        
+        """
+        Converts the variables into the appropriate types
+        and updates the sales sheet with the chosen product
+        and the price.
+        """
+
+        sales_data = chose_product()
+        converted_price = sales_data[1].replace('.', ',')
+       
+        final_data = []
+        final_data.append(sales_data[0])
+        final_data.append(converted_price)
+        sales.append_row(final_data)
+    
+    update_sales_worksheet()
+    
+    
+    
+
 main()
