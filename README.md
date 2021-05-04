@@ -1,6 +1,9 @@
 
 # food-menu terminal
 
+## Link to the app on heroku
+[food-menu-terminal](https://food-menu-spreadsheet.herokuapp.com/)
+
 ## Purpose
 To provide a way of interactive with google sheets through the terminal.
 
